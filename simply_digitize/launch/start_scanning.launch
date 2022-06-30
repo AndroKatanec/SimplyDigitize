@@ -1,0 +1,20 @@
+<launch>
+  <node pkg="simply_digitize" name="camera" type="camera.py" output="screen">
+  </node>
+  
+  <arg name="bin_path" default="/home" />
+  <arg name="base_dir" default="/home" />
+  <arg name="img_dir" default="/home" />
+  <node pkg="simply_digitize" name="finish_listener" type="finish_listener.py" output="screen">
+  	<param name = "binPath" value = "$(arg bin_path)" />
+  	<param name = "baseDir" value = "$(arg base_dir)" />
+  	<param name = "imgDir" value = "$(arg img_dir)" />
+  </node>
+  
+  <include file="$(find dynamixel_workbench_controllers)/launch/dynamixel_controllers.launch" />
+  
+  <arg name="move_motor_start_delay" default="5.0"/>  
+  <node name="move_motor" pkg="simply_digitize" type="move_motor.py" launch-prefix="bash -c 'sleep $(arg move_motor_start_delay); $0 $@' ">
+  </node>
+    
+</launch>
